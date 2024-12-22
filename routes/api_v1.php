@@ -10,7 +10,5 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::prefix('v1')->group(function () {
-    Route::apiResource('transaction', TransactionController::class);
+    Route::middleware('auth:sanctum')->apiResource('transaction', TransactionController::class);
 });
-
-Route::apiResource('transaction', TransactionController::class);
