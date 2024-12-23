@@ -59,9 +59,12 @@ class TransactionResource extends JsonResource
                     ],
                 ],
             ],
+            'includes' => [
+                new UserResource($this->user)
+            ],
             'links' => [
                 [
-                    'self' => route('transaction.show', ['transaction' => $this->id])
+                    'self' => route('transactions.show', ['transaction' => $this->id])
                 ]
             ],
         ];
