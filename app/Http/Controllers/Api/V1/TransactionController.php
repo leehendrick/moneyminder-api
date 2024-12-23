@@ -11,7 +11,7 @@ use App\Http\Requests\Api\V1\UpdateTransactionRequest;
 class TransactionController extends Controller
 {
     public function index(){
-        return Transaction::all();
+        TransactionResource::collection(Transaction::paginate());
     }
 
     public function show(Transaction $transaction){
