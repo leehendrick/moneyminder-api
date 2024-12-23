@@ -19,10 +19,15 @@ class TransactionTypeResource extends JsonResource
             'id' => $this->id,
             'attributes' => [
                 'name' => $this->name,
-                $this->mergeWhen($request->routeIs('transaction_types.*'),[
+                $this->mergeWhen($request->routeIs('transactionTypes.*'),[
                     'createdAt' => $this->created_at,
                     'updatedAt' => $this->updated_at,
                 ])
+            ],
+            'links' => [
+                [
+                    'self' => route('transactionTypes.show', ['transactionTypes' => $this->id])
+                ]
             ],
         ];
     }
