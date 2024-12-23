@@ -14,6 +14,56 @@ class TransactionResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'type' => 'transaction',
+            'id' => $this->id,
+            'attributes' => [
+                'value' => $this->value,
+                'date' => $this->date,
+                'description' => $this->description,
+                'createdAt' => $this->created_at,
+                'updatedAt' => $this->updated_at,
+            ],
+            'relationships' => [
+                'author' => [
+                    'data' => [
+                        'type' => 'user',
+                        'id' => $this->user_id
+                    ],
+                    'links' => [
+                        [
+                            'self' => 'todo',
+                        ]
+                    ],
+                ],
+                'transactionType' => [
+                    'data' => [
+                        'type' => 'transactionType',
+                        'id' => $this->transaction_type_id
+                    ],
+                    'links' => [
+                        [
+                            'self' => 'todo',
+                        ]
+                    ],
+                ],
+                'category' => [
+                    'data' => [
+                        'type' => 'category',
+                        'id' => $this->category_id
+                    ],
+                    'links' => [
+                        [
+                            'self' => 'todo',
+                        ]
+                    ],
+                ],
+            ],
+            'links' => [
+                [
+                    'self' => route('transaction.show', ['transaction' => $this->id])
+                ]
+            ],
+        ];
     }
 }
