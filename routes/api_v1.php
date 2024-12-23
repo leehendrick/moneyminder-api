@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\V1\UsersController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -10,5 +11,6 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::prefix('v1')->group(function () {
-    Route::middleware('auth:sanctum')->apiResource('transaction', TransactionController::class);
+    Route::middleware('auth:sanctum')->apiResource('transactions', TransactionController::class);
+    Route::middleware('auth:sanctum')->apiResource('users', UsersController::class);
 });
