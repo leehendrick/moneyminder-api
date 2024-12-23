@@ -31,7 +31,7 @@ class UsersController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        //
+       //
     }
 
     /**
@@ -39,7 +39,7 @@ class UsersController extends Controller
      */
     public function show(User $user)
     {
-        //
+        return new UserResource($user);
     }
 
     /**
