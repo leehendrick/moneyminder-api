@@ -11,9 +11,9 @@ class Category extends Model
 {
     use HasFactory;
 
-    public function transaction(): HasMany
+    public function transaction(): BelongsTo
     {
-        return $this->hasMany(Transaction::class);
+        return $this->belongsTo(Transaction::class);
     }
 
     public function user(): BelongsTo

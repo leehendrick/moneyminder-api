@@ -11,14 +11,14 @@ class Transaction extends Model
 {
     use HasFactory;
 
-    public function category(): BelongsTo
+    public function category(): HasMany
     {
-        return $this->belongsTo(Category::class);
+        return $this->hasMany(Category::class);
     }
 
-    public function transactionType(): HasMany
+    public function transaction_type(): BelongsTo
     {
-        return $this->hasMany(TransactionType::class);
+        return $this->belongsTo(TransactionType::class);
     }
 
     public function user(): BelongsTo
