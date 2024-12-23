@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Resources\V1\UserResource;
 use App\Models\User;
 
 class UsersController extends Controller
@@ -14,7 +15,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        //
+        return  UserResource::collection(User::paginate());
     }
 
     /**
