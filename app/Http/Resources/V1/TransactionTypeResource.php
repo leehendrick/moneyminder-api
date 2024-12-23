@@ -15,7 +15,7 @@ class TransactionTypeResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'type' => 'transaction_type',
+            'type' => 'transactionTypes',
             'id' => $this->id,
             'attributes' => [
                 'name' => $this->name,
@@ -23,11 +23,6 @@ class TransactionTypeResource extends JsonResource
                     'createdAt' => $this->created_at,
                     'updatedAt' => $this->updated_at,
                 ])
-            ],
-            'links' => [
-                [
-                    'self' => route('transactionTypes.show', ['transactionTypes' => $this->id])
-                ]
             ],
         ];
     }

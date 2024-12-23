@@ -26,25 +26,6 @@ class CategoriesResource extends JsonResource
                     'updatedAt' => $this->updated_at,
                 ])
             ],
-            'author' => [
-                'data' => [
-                    'type' => 'user',
-                    'id' => $this->user_id
-                ],
-                'links' => [
-                    [
-                        'self' => 'todo',
-                    ]
-                ],
-            ],
-            'includes' => [
-                new UserResource($this->user)
-            ],
-            'links' => [
-                [
-                    'self' => route('categories.show', ['categories' => $this->id])
-                ]
-            ],
         ];
     }
 }
