@@ -32,13 +32,13 @@ class TransactionResource extends JsonResource
                     ],
                     'links' => [
                         [
-                            'self' => 'todo',
+                            'self' => route('users.show', ['user' => $this->user_id]),
                         ]
                     ],
                 ],
             ],
             'includes' => [
-                new UserResource($this->user),
+                new UserResource($this->whenLoaded('user')),
                 //new TransactionTypeResource($this->transactionTypes), ---> Not returning the relationship
                 //new CategoriesResource($this->categories), ---> Not returning the relationship
             ],
