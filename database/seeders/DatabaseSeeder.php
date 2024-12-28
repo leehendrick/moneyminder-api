@@ -21,9 +21,12 @@ class DatabaseSeeder extends Seeder
             ->recycle($users)
             ->create();
 
-        \App\Models\Transaction::factory(20)
-            ->recycle($users)
-            ->create();
+        foreach ($users as $user) {
+            \App\Models\Transaction::factory(3)
+                ->create([
+                    'user_id' => $user->id,
+                ]);
+        }
 
         //User::factory()->create([
         //   'name' => 'Test User',
