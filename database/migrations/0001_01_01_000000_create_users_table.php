@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('default_currency')->default('CAD');
             $table->boolean('is_notifiable')->default(true);
+            $table->foreignId('transaction_id')->constrained();
             $table->rememberToken();
             $table->timestamps();
         });
