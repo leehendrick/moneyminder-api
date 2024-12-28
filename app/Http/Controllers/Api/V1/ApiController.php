@@ -7,5 +7,7 @@ use Illuminate\Http\Request;
 
 class ApiController extends Controller
 {
-    //
+    public function include(string $relationship): bool {
+
+    }
 }
