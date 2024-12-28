@@ -15,17 +15,17 @@ class Transaction extends Model
 
     public function category(): HasMany
     {
-        return $this->hasMany(Category::class);
+        return $this->hasMany(Category::class, 'id', 'category_id');
     }
 
     public function transaction_type(): BelongsTo
     {
-        return $this->belongsTo(TransactionType::class);
+        return $this->belongsTo(TransactionType::class, 'transaction_type_id', 'id');
     }
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     public function scopeFilter(Builder $builder, QueryFilter $filters){
