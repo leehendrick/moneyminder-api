@@ -15,7 +15,7 @@ class UsersController extends ApiController
      */
     public function index()
     {
-        if ($this->include('transaction')) {
+        if ($this->include('transactions')) {
             return UserResource::collection(User::with('transactions')->paginate());
         }
         return  UserResource::collection(User::paginate());
@@ -42,7 +42,7 @@ class UsersController extends ApiController
      */
     public function show(User $user)
     {
-        if($this->include('transaction')) {
+        if($this->include('transactions')) {
             return new UserResource($user->load('transactions'));
         }
         return new UserResource($user);
