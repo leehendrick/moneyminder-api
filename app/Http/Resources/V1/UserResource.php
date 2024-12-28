@@ -28,6 +28,10 @@ class UserResource extends JsonResource
                     'updatedAt' => $this->updated_at,
                 ]),
             ],
+            'includes' => TransactionResource::collection($this->whenLoaded('transactions')),
+            'links' => [
+                'self' => route('users.show', ['user' => $this->id])
+            ]
 
         ];
     }
