@@ -39,8 +39,8 @@ class TransactionResource extends JsonResource
             ],
             'includes' => [
                 new UserResource($this->user),
-                new TransactionTypeResource($this->transactionTypes),
-                new CategoriesResource($this->categories),
+                //new TransactionTypeResource($this->transactionTypes), ---> Not returning the relationship
+                //new CategoriesResource($this->categories), ---> Not returning the relationship
             ],
             'links' => [
                 [
