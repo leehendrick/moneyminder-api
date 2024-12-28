@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
             ->recycle($users)
             ->create();
 
-        \App\Models\Transaction::factory(50)
+        \App\Models\Transaction::factory(20)
             ->recycle($users)
             ->create();
 
