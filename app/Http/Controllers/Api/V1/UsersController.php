@@ -8,13 +8,16 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\V1\UserResource;
 use App\Models\User;
 
-class UsersController extends Controller
+class UsersController extends ApiController
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+        if ($this->include('transaction')) {
+            return UserResource::collection(User::with('transactions')->paginate());
+        }
         return  UserResource::collection(User::paginate());
     }
 
@@ -39,6 +42,9 @@ class UsersController extends Controller
      */
     public function show(User $user)
     {
+        if($this->include('transaction')) {
+            return new UserResource($user->load('transactions'));
+        }
         return new UserResource($user);
     }
 
