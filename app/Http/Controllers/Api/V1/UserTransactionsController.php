@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Filters\V1\TransactionFilter;
 use App\Http\Requests\Api\V1\ReplaceTransactionRequest;
 use App\Http\Requests\Api\V1\StoreTransactionRequest;
+use App\Http\Requests\Api\V1\UpdateTransactionRequest;
 use App\Http\Resources\V1\TransactionResource;
 use App\Models\Transaction;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -22,16 +23,21 @@ class UserTransactionsController extends ApiController
 
     public function store($user_id, StoreTransactionRequest $request)
     {
-        $model = [
-            'value' => $request->input('data.attributes.value'),
-            'date' => $request->input('data.attributes.date'),
-            'description' => $request->input('data.attributes.description'),
-            'transaction_type_id' => $request->input('data.relationships.transactionType.data.id'),
-            'category_id' => $request->input('data.relationships.category.data.id'),
-            'user_id' => $user_id,
-        ];
+        return new TransactionResource(Transaction::create($request->mappedAttributes()));
+    }
 
-        return new TransactionResource(Transaction::create($model));
+    public function update(UpdateTransactionRequest $request, $user_id, $transaction_id){
+        //PATCH
+        try {
+            $transaction = Transaction::findOrFail($transaction_id);
+
+            if ($transaction->user_id == $user_id) {
+                $transaction->update($request->mappedAttributes());
+                return new TransactionResource($transaction);
+            }
+        } catch (ModelNotFoundException $exception) {
+            return $this->error('Transaction can not be found', 404);
+        }
     }
 
     public function replace(ReplaceTransactionRequest $request, $user_id, $transaction_id)
@@ -41,16 +47,8 @@ class UserTransactionsController extends ApiController
             $transaction = Transaction::findOrFail($transaction_id);
 
             if($transaction->user_id == $user_id){
-                $model = [
-                    'value' => $request->input('data.attributes.value'),
-                    'date' => $request->input('data.attributes.date'),
-                    'description' => $request->input('data.attributes.description'),
-                    'transaction_type_id' => $request->input('data.relationships.transactionType.data.id'),
-                    'category_id' => $request->input('data.relationships.category.data.id'),
-                    'user_id' => $request->input('data.relationships.author.data.id'),
-                ];
 
-                $transaction->update($model);
+                $transaction->update($request->mappedAttributes());
 
                 return new TransactionResource($transaction);
             }
