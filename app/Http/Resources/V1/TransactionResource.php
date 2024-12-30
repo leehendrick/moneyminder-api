@@ -21,7 +21,7 @@ class TransactionResource extends JsonResource
                 'value' => $this->value,
                 'date' => $this->date,
                 'description' => $this->when(
-                    !$request->routeIs(['transactions.show', 'users.transactions.index']),
+                    !$request->routeIs(['transactions.index', 'users.transactions.index']),
                     $this->description
                 ),
                 'createdAt' => $this->created_at,
