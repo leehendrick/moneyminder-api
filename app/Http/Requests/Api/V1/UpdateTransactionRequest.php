@@ -5,14 +5,14 @@ namespace App\Http\Requests\Api\V1;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateTransactionRequest extends FormRequest
+class UpdateTransactionRequest extends BaseTransactionRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,8 +22,15 @@ class UpdateTransactionRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
+        $rules = [
+            'data.attributes.value' => 'sometimes|string',
+            'data.attributes.date' => 'sometimes|date_format:Y-m-d',
+            'data.attributes.description' => 'sometimes|string',
+            'data.relationships.author.data.id' => 'sometimes|integer',
+            'data.relationships.transactionType.data.id' => 'sometimes|integer',
+            'data.relationships.category.data.id' => 'sometimes|integer',
         ];
+
+        return $rules;
     }
 }
