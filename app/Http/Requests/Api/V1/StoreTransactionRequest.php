@@ -30,6 +30,8 @@ class StoreTransactionRequest extends FormRequest
 
         if ($this->routeIs('transactions.store')) {
             $rules ['data.relationships.author.data.id'] = 'required|integer';
+            $rules ['data.relationships.transactionType.data.id'] = 'required|integer';
+            $rules ['data.relationships.category.data.id'] = 'required|integer';
         }
 
         return $rules;
