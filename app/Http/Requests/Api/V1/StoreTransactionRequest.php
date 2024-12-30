@@ -22,8 +22,16 @@ class StoreTransactionRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
+        $rules = [
+            'data.attributes.value' => 'required|string',
+            'data.attributes.date' => 'required|date_format:Y-m-d',
+            'data.attributes.description' => 'required|string',
         ];
+
+        if ($this->routeIs('transactions.store')) {
+            $rules ['data.relationships.author.data.id'] = 'required|integer';
+        }
+
+        return $rules;
     }
 }
