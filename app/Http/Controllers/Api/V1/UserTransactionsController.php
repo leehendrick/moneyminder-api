@@ -7,9 +7,10 @@ use App\Http\Filters\V1\TransactionFilter;
 use App\Http\Requests\Api\V1\StoreTransactionRequest;
 use App\Http\Resources\V1\TransactionResource;
 use App\Models\Transaction;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
-class UserTransactionsController extends Controller
+class UserTransactionsController extends ApiController
 {
     public function index($user_id, TransactionFilter $filters)
     {
@@ -30,5 +31,22 @@ class UserTransactionsController extends Controller
         ];
 
         return new TransactionResource(Transaction::create($model));
+    }
+
+    public function destroy($user_id, $transaction_id)
+    {
+        try {
+            $transaction = Transaction::findOrFail($transaction_id);
+
+
+            if($transaction->user_id == $user_id){
+                $transaction->delete();
+                return $this->ok('Transaction sucessfully deleted.');
+            }
+
+            return $this->error('Transaction can not be found.', 404);
+        } catch(ModelNotFoundException $exception) {
+            return $this->error('Transaction can not be found.', 404);
+        }
     }
 }
