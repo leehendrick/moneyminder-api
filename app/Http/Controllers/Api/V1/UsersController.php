@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Filters\V1\UserFilter;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\V1\UserResource;
@@ -13,12 +14,9 @@ class UsersController extends ApiController
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(UserFilter $filters)
     {
-        if ($this->include('transactions')) {
-            return UserResource::collection(User::with('transactions')->paginate());
-        }
-        return  UserResource::collection(User::paginate());
+        return  UserResource::collection(User::filter($filters)->paginate());
     }
 
     /**
