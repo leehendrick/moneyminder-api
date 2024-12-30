@@ -13,6 +13,15 @@ class Transaction extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'value',
+        'date',
+        'description',
+        'transaction_type_id',
+        'category_id',
+        'user_id',
+    ];
+
     public function category(): HasMany
     {
         return $this->hasMany(Category::class, 'id', 'category_id');
