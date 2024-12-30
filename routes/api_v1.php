@@ -8,14 +8,19 @@ use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\Api\V1\TransactionController;
 use \App\Http\Controllers\Api\V1\UserTransactionsController;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
 
-Route::prefix('v1')->group(function () {
-    Route::middleware('auth:sanctum')->apiResource('transactions', TransactionController::class);
-    Route::middleware('auth:sanctum')->apiResource('users', UsersController::class);
-    Route::middleware('auth:sanctum')->apiResource('transactionTypes', TransactionTypesController::class);
-    Route::middleware('auth:sanctum')->apiResource('categories', CategoriesController::class);
-    Route::middleware('auth:sanctum')->apiResource('users.transactions', UserTransactionsController::class);
+Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
+    Route::apiResource('transactions', TransactionController::class)->except(['update']);
+    Route::put('transactions/{transaction}', [TransactionController::class, 'replace']);
+
+    Route::apiResource('transactionTypes', TransactionTypesController::class);
+
+    Route::apiResource('categories', CategoriesController::class);
+
+    Route::apiResource('users.transactions', UserTransactionsController::class)->except(['update']);
+    Route::put('users/{user}/transactions/{transaction}', [UserTransactionsController::class, 'replace']);
+
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
 });
