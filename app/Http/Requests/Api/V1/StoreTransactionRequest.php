@@ -34,4 +34,11 @@ class StoreTransactionRequest extends FormRequest
 
         return $rules;
     }
+
+    public function messages(): array
+    {
+        return  [
+            'data.attributes.date' => 'The provided date is invalid. Please use yyyy-mm-dd format.',
+        ];
+    }
 }
