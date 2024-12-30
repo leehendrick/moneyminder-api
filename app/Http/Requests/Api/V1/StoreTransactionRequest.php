@@ -3,9 +3,8 @@
 namespace App\Http\Requests\Api\V1;
 
 use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Foundation\Http\FormRequest;
 
-class StoreTransactionRequest extends FormRequest
+class StoreTransactionRequest extends BaseTransactionRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -37,10 +36,4 @@ class StoreTransactionRequest extends FormRequest
         return $rules;
     }
 
-    public function messages(): array
-    {
-        return  [
-            'data.attributes.date' => 'The provided date is invalid. Please use yyyy-mm-dd format.',
-        ];
-    }
 }
