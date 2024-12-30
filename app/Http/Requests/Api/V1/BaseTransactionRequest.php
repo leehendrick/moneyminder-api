@@ -17,19 +17,19 @@ class BaseTransactionRequest extends FormRequest
 
     public function mappedAttributes(): array
     {
-        $attributesMap = [
-            'data.attributes.value' => 'required|string',
-            'data.attributes.date' => 'required|date_format:Y-m-d',
-            'data.attributes.description' => 'required|string',
-            'data.relationships.author.data.id' => 'required|integer',
-            'data.relationships.transactionType.data.id' => 'required|integer',
-            'data.relationships.category.data.id' => 'required|integer',
+        $attributeMap = [
+            'data.attributes.value' => 'value',
+            'data.attributes.date' => 'date',
+            'data.attributes.description' => 'description',
+            'data.relationships.transactionType.data.id' => 'transaction_type_id',
+            'data.relationships.category.data.id' => 'category_id',
+            'data.relationships.author.data.id' => 'user_id',
         ];
 
         $attributesToUpdate = [];
-        foreach ($attributesMap as $key => $attribute) {
+        foreach ($attributeMap as $key => $attribute) {
             if ($this->has($key)) {
-                $attributesToUpdate[$key] = $this->input($key);
+                $attributesToUpdate[$attribute] = $this->input($key);
             }
         }
 
