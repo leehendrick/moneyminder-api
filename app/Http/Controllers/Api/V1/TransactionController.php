@@ -44,6 +44,18 @@ class TransactionController extends ApiController
         }
         return new TransactionResource($transaction);
     }
+
+    public function destroy($transaction_id)
+    {
+        try {
+            $transaction = Transaction::findOrFail($transaction_id);
+            $transaction->delete();
+
+            return $this->ok('Transaction sucessfully deleted.');
+        } catch(ModelNotFoundException $exception) {
+            return $this->error('Transaction can not be found.', 404);
+        }
+    }
 }
 
 
