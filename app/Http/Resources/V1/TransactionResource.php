@@ -36,6 +36,18 @@ class TransactionResource extends JsonResource
                         ]
                     ],
                 ],
+                'transactionType' => [
+                    'data' => [
+                        'type' => 'transactionType',
+                        'id' => $this->transaction_type_id,
+                    ]
+                ],
+                'category' => [
+                    'data' => [
+                        'type' => 'category',
+                        'id' => $this->category_id,
+                    ]
+                ]
             ],
             'includes' => [
                 new UserResource($this->whenLoaded('user')),
