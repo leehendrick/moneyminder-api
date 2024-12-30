@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Filters\V1\TransactionFilter;
+use App\Http\Requests\Api\V1\ReplaceTransactionRequest;
 use App\Http\Requests\Api\V1\StoreTransactionRequest;
 use App\Http\Resources\V1\TransactionResource;
 use App\Models\Transaction;
@@ -43,6 +44,30 @@ class TransactionController extends ApiController
             return new TransactionResource($transaction->load('user'));
         }
         return new TransactionResource($transaction);
+    }
+
+    public function replace(ReplaceTransactionRequest $request, $transaction_id)
+    {
+        //PUT
+        try {
+            $transaction = Transaction::findOrFail($transaction_id);
+
+            $model = [
+                'value' => $request->input('data.attributes.value'),
+                'date' => $request->input('data.attributes.date'),
+                'description' => $request->input('data.attributes.description'),
+                'transaction_type_id' => $request->input('data.relationships.transactionType.data.id'),
+                'category_id' => $request->input('data.relationships.category.data.id'),
+                'user_id' => $request->input('data.relationships.author.data.id'),
+            ];
+
+            $transaction->update($model);
+
+            return new TransactionResource($transaction);
+
+        } catch (ModelNotFoundException $exception){
+            return $this->error('Transaction can not be found.', 404);
+        }
     }
 
     public function destroy($transaction_id)
