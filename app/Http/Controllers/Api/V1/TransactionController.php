@@ -9,10 +9,14 @@ use App\Http\Requests\Api\V1\UpdateTransactionRequest;
 use App\Http\Resources\V1\TransactionResource;
 use App\Models\Transaction;
 use App\Models\User;
+use App\Policies\V1\TransactionPolicy;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class TransactionController extends ApiController
 {
+    protected $policyClass = TransactionPolicy::class;
+
     public function index(TransactionFilter $filters){
         return TransactionResource::collection(Transaction::filter($filters)->paginate());
     }
@@ -44,11 +48,15 @@ class TransactionController extends ApiController
         try {
             $transaction = Transaction::findOrFail($transaction_id);
 
+            $this->isAble('update', $transaction);
+
             $transaction->update($request->mappedAttributes());
 
             return new TransactionResource($transaction);
         } catch (ModelNotFoundException $exception){
             return $this->error('Transaction can not be found', 404);
+        } catch (AuthorizationException $exception) {
+            return $this->error('You are not authorized to update that resource', 403);
         }
     }
 
