@@ -7,6 +7,7 @@ use App\Policies\V1\TransactionPolicy;
 use App\Traits\ApiResponses;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Gate;
 
 class ApiController extends Controller
 {
@@ -30,6 +31,7 @@ class ApiController extends Controller
 
     public function isAble($ability, $targetModel): Response
     {
-        return $this->authorize($ability, [$targetModel, $this->policyClass]);
+        $gate = Gate::policy($targetModel::class, $this->policyClass);
+        return $gate->authorize($ability, [$targetModel, $this->policyClass]);
     }
 }
