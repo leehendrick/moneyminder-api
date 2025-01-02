@@ -28,6 +28,13 @@ class DatabaseSeeder extends Seeder
                 ]);
         }
 
+        User::create([
+            'name' => 'All Might',
+            'email' => 'allmight@gmail.com',
+            'password' => bcrypt('allmight'),
+            'is_admin' => true,
+        ]);
+
         //User::factory()->create([
         //   'name' => 'Test User',
         //   'email' => 'test@example.com',
