@@ -14,7 +14,7 @@ class ApiController extends Controller
     use ApiResponses;
     use AuthorizesRequests;
 
-    protected $policyClass = TransactionPolicy::class;
+    protected string $policyClass = TransactionPolicy::class;
 
     public function include(string $relationship): bool {
 
