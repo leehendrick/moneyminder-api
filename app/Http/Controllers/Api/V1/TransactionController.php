@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class TransactionController extends ApiController
 {
-    protected $policyClass = TransactionPolicy::class;
+    protected string $policyClass = TransactionPolicy::class;
 
     public function index(TransactionFilter $filters){
         return TransactionResource::collection(Transaction::filter($filters)->paginate());
@@ -25,10 +25,15 @@ class TransactionController extends ApiController
     {
         try {
             $user = User::findOrFail($request->input('data.relationships.author.data.id'));
+
+            $this->isAble('store', null);
+
         } catch (ModelNotFoundException $exception){
             return $this->ok('User not found', [
                 'error' => 'The provided user id does not exist.'
             ]);
+        } catch (AuthorizationException $ex) {
+            return $this->error('You are not authorized to store that resource', 401);
         }
 
 
@@ -66,12 +71,16 @@ class TransactionController extends ApiController
         try {
             $transaction = Transaction::findOrFail($transaction_id);
 
+            $this->isAble('replace', $transaction);
+
             $transaction->update($request->mappedAttributes());
 
             return new TransactionResource($transaction);
 
         } catch (ModelNotFoundException $exception){
             return $this->error('Transaction can not be found.', 404);
+        } catch (AuthorizationException $ex) {
+            return $this->error('You are not authorized to replace that resource', 401);
         }
     }
 
@@ -79,11 +88,16 @@ class TransactionController extends ApiController
     {
         try {
             $transaction = Transaction::findOrFail($transaction_id);
+
+            $this->isAble('delete', $transaction);
+
             $transaction->delete();
 
             return $this->ok('Transaction sucessfully deleted.');
         } catch(ModelNotFoundException $exception) {
             return $this->error('Transaction can not be found.', 404);
+        } catch (AuthorizationException $ex) {
+            return $this->error('You are not authorized to delete that resource', 401);
         }
     }
 }
