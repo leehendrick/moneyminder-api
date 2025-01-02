@@ -24,20 +24,14 @@ class TransactionController extends ApiController
     public function store(StoreTransactionRequest $request)
     {
         try {
-            $user = User::findOrFail($request->input('data.relationships.author.data.id'));
 
-            $this->isAble('store', null);
+            $this->isAble('store', Transaction::class);
 
-        } catch (ModelNotFoundException $exception){
-            return $this->ok('User not found', [
-                'error' => 'The provided user id does not exist.'
-            ]);
+            return new TransactionResource(Transaction::create($request->mappedAttributes()));
+
         } catch (AuthorizationException $ex) {
             return $this->error('You are not authorized to store that resource', 401);
         }
-
-
-        return new TransactionResource(Transaction::create($request->mappedAttributes()));
     }
 
     public function show(Transaction $transaction){
