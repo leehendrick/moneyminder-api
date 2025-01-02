@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Models\Transaction;
 use App\Policies\V1\TransactionPolicy;
 use App\Traits\ApiResponses;
 use Illuminate\Auth\Access\Response;
@@ -29,9 +30,12 @@ class ApiController extends Controller
         return in_array(strtolower($relationship), $includeValues);
     }
 
-    public function isAble($ability, $targetModel): Response
-    {
-        $gate = Gate::policy($targetModel::class, $this->policyClass);
-        return $gate->authorize($ability, [$targetModel, $this->policyClass]);
+    public function isAble($ability, $targetModel) {
+        if ($targetModel instanceof Transaction) {
+            $gate = Gate::policy($targetModel::class, $this->policyClass);
+        }
+            $gate = Gate::policy($targetModel, $this->policyClass);
+
+        return $gate->authorize($ability, [$targetModel]);
     }
 }
