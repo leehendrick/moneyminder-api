@@ -26,7 +26,7 @@ class TransactionPolicy
         return false;
     }
 
-    public function replace(User $user, Transaction $transaction) {
+    public function replace(User $user) {
         if ($user->tokenCan(Abilities::ReplaceTransaction)) {
             return true;
         }
@@ -34,12 +34,8 @@ class TransactionPolicy
         return false;
     }
 
-    public function store(User $user, Transaction $transaction) {
-        if ($user->tokenCan(Abilities::CreateTransaction)) {
-            return true;
-        }
-
-        return false;
+    public function store(User $user) {
+        return $user->tokenCan(Abilities::CreateTransaction) || $user->tokenCan(Abilities::CreateOwnTransaction);
     }
 
     public function update(User $user, Transaction $transaction) {
