@@ -10,6 +10,7 @@ final class Abilities {
     public const ReplaceTransaction = 'transaction:replace';
     public const DeleteTransaction= 'transaction:delete';
 
+    public const CreateOwnTransaction = 'transaction:own:update';
     public const UpdateOwnTransaction = 'transaction:own:update';
     public const DeleteOwnTransaction= 'transaction:own:delete';
 
@@ -20,6 +21,7 @@ final class Abilities {
 
     public static function getAbilities(User $user): array
     {
+        // don´t assign token abilities to [*]
         if ($user->is_admin) {
             return [
                 self::CreateTransaction,
@@ -33,7 +35,7 @@ final class Abilities {
             ];
         } else {
             return [
-                self::CreateTransaction,
+                self::CreateOwnTransaction,
                 self::UpdateOwnTransaction,
                 self::DeleteOwnTransaction
             ];
