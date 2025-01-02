@@ -4,6 +4,7 @@ namespace App\Policies\V1;
 
 use App\Models\Transaction;
 use App\Models\User;
+use App\Permissions\V1\Abilities;
 
 class TransactionPolicy
 {
@@ -15,8 +16,39 @@ class TransactionPolicy
         //
     }
 
-    public function update(Transaction $transaction, User $user)
-    {
-        return $transaction->user_id === $user->id;
+    public function delete(User $user, Transaction $transaction) {
+        if ($user->tokenCan(Abilities::DeleteTransaction)) {
+            return true;
+        } else if ($user->tokenCan(Abilities::DeleteOwnTransaction)) {
+            return $user->id === $transaction->user_id;
+        }
+
+        return false;
+    }
+
+    public function replace(User $user, Transaction $transaction) {
+        if ($user->tokenCan(Abilities::ReplaceTransaction)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function store(User $user, Transaction $transaction) {
+        if ($user->tokenCan(Abilities::CreateTransaction)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function update(User $user, Transaction $transaction) {
+        if ($user->tokenCan(Abilities::UpdateTransaction)) {
+            return true;
+        } else if ($user->tokenCan(Abilities::UpdateOwnTransaction)) {
+            return $user->id === $transaction->user_id;
+        }
+
+        return false;
     }
 }
