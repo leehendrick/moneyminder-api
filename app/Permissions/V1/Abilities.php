@@ -10,8 +10,9 @@ final class Abilities {
     public const ReplaceTransaction = 'transaction:replace';
     public const DeleteTransaction= 'transaction:delete';
 
-    public const CreateOwnTransaction = 'transaction:own:update';
+    public const CreateOwnTransaction = 'transaction:own:create';
     public const UpdateOwnTransaction = 'transaction:own:update';
+    public const ReplaceOwnTransaction = 'transaction:own:replace';
     public const DeleteOwnTransaction= 'transaction:own:delete';
 
     public const CreateUser = 'user:create';
@@ -37,7 +38,8 @@ final class Abilities {
             return [
                 self::CreateOwnTransaction,
                 self::UpdateOwnTransaction,
-                self::DeleteOwnTransaction
+                self::DeleteOwnTransaction,
+                self::ReplaceOwnTransaction,
             ];
         }
     }
