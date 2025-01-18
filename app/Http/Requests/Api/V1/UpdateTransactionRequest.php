@@ -22,7 +22,7 @@ class UpdateTransactionRequest extends BaseTransactionRequest
      */
     public function rules(): array
     {
-        $rules = [
+        return [
             'data.attributes.value' => 'sometimes|string',
             'data.attributes.date' => 'sometimes|date_format:Y-m-d',
             'data.attributes.description' => 'sometimes|string',
@@ -30,7 +30,5 @@ class UpdateTransactionRequest extends BaseTransactionRequest
             'data.relationships.transactionType.data.id' => 'sometimes|integer',
             'data.relationships.category.data.id' => 'sometimes|integer',
         ];
-
-        return $rules;
     }
 }
