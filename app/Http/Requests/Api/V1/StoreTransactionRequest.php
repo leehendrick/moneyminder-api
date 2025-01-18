@@ -23,8 +23,10 @@ class StoreTransactionRequest extends BaseTransactionRequest
     public function rules(): array
     {
 
-        $userIdAttr = $this->routeIs('transactions.store') ? 'data.relationships.author.data.id' : 'user.id';
+        $userIdAttr = $this->routeIs('transactions.store') ? 'data.relationships.author.data.id' : 'user';
+
         $rules = [
+            //TO DO: Usar regex para value
             'data.attributes.value' => 'required|string',
             'data.attributes.date' => 'required|date_format:Y-m-d',
             'data.attributes.description' => 'required|string',
@@ -33,16 +35,24 @@ class StoreTransactionRequest extends BaseTransactionRequest
 
         $user = $this->user();
 
+        if ($user->tokenCan(Abilities::CreateOwnTransaction)) {
+            $rules[$userIdAttr] .= '|size:' . $user->id;
+        }
+        //TO DO: Melhorar a validação e usar regex
         if ($this->routeIs('transactions.store')) {
             $rules ['data.relationships.transactionType.data.id'] = 'required|integer';
             $rules ['data.relationships.category.data.id'] = 'required|integer';
-
-            if ($user->tokenCan(Abilities::CreateOwnTransaction)) {
-                $rules ['data.relationships.author.data.id'] .= '|size:' . $user->id;
-            }
         }
 
         return $rules;
+    }
+
+    protected function prepareForValidation(): void {
+        if ($this->routeIs('users.transactions.store')) {
+            $this->merge([
+                'user' => $this->route('user')
+            ]);
+        }
     }
 
 }
