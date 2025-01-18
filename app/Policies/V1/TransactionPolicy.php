@@ -26,9 +26,11 @@ class TransactionPolicy
         return false;
     }
 
-    public function replace(User $user) {
+    public function replace(User $user, Transaction $transaction) {
         if ($user->tokenCan(Abilities::ReplaceTransaction)) {
             return true;
+        } else if ($user->tokenCan(Abilities::ReplaceOwnTransaction)) {
+            return $user->id === $transaction->user_id;
         }
 
         return false;
