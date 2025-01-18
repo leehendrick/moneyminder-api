@@ -22,11 +22,13 @@ class StoreTransactionRequest extends BaseTransactionRequest
      */
     public function rules(): array
     {
+
+        $userIdAttr = $this->routeIs('transactions.store') ? 'data.relationships.author.data.id' : 'user.id';
         $rules = [
             'data.attributes.value' => 'required|string',
             'data.attributes.date' => 'required|date_format:Y-m-d',
             'data.attributes.description' => 'required|string',
-            'data.relationships.author.data.id' => 'required|integer|exists:users,id',
+             $userIdAttr => 'required|integer|exists:users,id',
         ];
 
         $user = $this->user();
