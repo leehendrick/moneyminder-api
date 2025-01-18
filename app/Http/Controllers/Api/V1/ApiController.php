@@ -30,12 +30,24 @@ class ApiController extends Controller
         return in_array(strtolower($relationship), $includeValues);
     }
 
-    public function isAble($ability, $targetModel) {
-        if ($targetModel instanceof Transaction) {
-            $gate = Gate::policy($targetModel::class, $this->policyClass);
+    public function isAble($ability, $targetModel)
+    {
+        // Verifica se o modelo é uma instância de Transaction ou outro modelo válido
+        if (is_object($targetModel) && $targetModel instanceof Transaction) {
+            // Define a policy explicitamente
+            Gate::policy(get_class($targetModel), $this->policyClass);
+        } elseif (is_string($targetModel)) {
+            // Verifica se é um nome de classe válido
+            if (!class_exists($targetModel)) {
+                throw new \InvalidArgumentException("The target model class '$targetModel' does not exist.");
+            }
+            Gate::policy($targetModel, $this->policyClass);
+        } else {
+            throw new \InvalidArgumentException("Invalid target model type.");
         }
-            $gate = Gate::policy($targetModel, $this->policyClass);
 
-        return $gate->authorize($ability, [$targetModel]);
+        // Tenta autorizar com o Gate
+        return Gate::authorize($ability, [$targetModel]);
     }
+
 }
