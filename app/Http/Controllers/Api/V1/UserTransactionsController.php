@@ -88,7 +88,7 @@ class UserTransactionsController extends ApiController
 
             $transaction->delete();
 
-            return $this->ok('Ticket sucessfully deleted.');
+            return $this->ok('Transaction sucessfully deleted.');
 
         } catch(ModelNotFoundException $exception) {
             return $this->error('Transaction can not be found.', 404);
