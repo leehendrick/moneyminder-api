@@ -9,8 +9,6 @@ use App\Http\Requests\Api\V1\UpdateTransactionRequest;
 use App\Http\Resources\V1\TransactionResource;
 use App\Models\Transaction;
 use App\Policies\V1\TransactionPolicy;
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class TransactionController extends ApiController
 {
