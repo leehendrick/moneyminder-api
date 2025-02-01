@@ -27,6 +27,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'is_notifiable',
+        'default_currency'
     ];
 
     /**
