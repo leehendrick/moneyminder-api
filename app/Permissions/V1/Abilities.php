@@ -20,6 +20,10 @@ final class Abilities {
     public const ReplaceUser = 'user:replace';
     public const DeleteUser = 'user:delete';
 
+    public const UpdateOwnUser = 'user:own:update';
+    public const ReplaceOwnUser = 'user:own:replace';
+    public const DeleteOwnUser = 'user:own:delete';
+
     public static function getAbilities(User $user): array
     {
         // don´t assign token abilities to [*]
@@ -40,6 +44,9 @@ final class Abilities {
                 self::UpdateOwnTransaction,
                 self::DeleteOwnTransaction,
                 self::ReplaceOwnTransaction,
+                self::UpdateOwnUser,
+                self::ReplaceOwnUser,
+                self::DeleteOwnUser,
             ];
         }
     }
