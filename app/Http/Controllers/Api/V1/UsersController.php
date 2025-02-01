@@ -31,7 +31,13 @@ class UsersController extends ApiController
      */
     public function store(StoreUserRequest $request)
     {
-       //
+        try {
+            $user = User::create($request->mappedAttributes());
+            return new  UserResource($user);
+        } catch (\Exception $exception) {
+            return $this->error($exception->getMessage(), 401);
+        }
+
     }
 
     /**
