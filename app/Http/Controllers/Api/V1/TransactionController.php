@@ -8,7 +8,6 @@ use App\Http\Requests\Api\V1\StoreTransactionRequest;
 use App\Http\Requests\Api\V1\UpdateTransactionRequest;
 use App\Http\Resources\V1\TransactionResource;
 use App\Models\Transaction;
-use App\Models\User;
 use App\Policies\V1\TransactionPolicy;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -23,15 +22,11 @@ class TransactionController extends ApiController
 
     public function store(StoreTransactionRequest $request)
     {
-        try {
-
-            $this->isAble('store', Transaction::class);
-
+        if ($this->isAble('store', Transaction::class)){
             return new TransactionResource(Transaction::create($request->mappedAttributes()));
-
-        } catch (AuthorizationException $ex) {
-            return $this->error('You are not authorized to store that resource', 401);
         }
+
+        return $this->notAuthorized('You are not authorized to store that resource');
     }
 
     public function show(Transaction $transaction){
@@ -42,57 +37,36 @@ class TransactionController extends ApiController
         return new TransactionResource($transaction);
     }
 
-    public function update(UpdateTransactionRequest $request,  $transaction_id){
+    public function update(UpdateTransactionRequest $request,  Transaction $transaction){
+
         //PATCH
-        try {
-            $transaction = Transaction::findOrFail($transaction_id);
+            if ($this->isAble('update', $transaction)){
+                $transaction->update($request->mappedAttributes());
+                return new TransactionResource($transaction);
+            }
 
-            $this->isAble('update', $transaction);
-
-            $transaction->update($request->mappedAttributes());
-
-            return new TransactionResource($transaction);
-        } catch (ModelNotFoundException $exception){
-            return $this->error('Transaction can not be found', 404);
-        } catch (AuthorizationException $exception) {
-            return $this->error('You are not authorized to update that resource', 403);
-        }
+            return $this->notAuthorized('You are not authorized to update that resource');
     }
 
-    public function replace(ReplaceTransactionRequest $request, $transaction_id)
+    public function replace(ReplaceTransactionRequest $request, Transaction $transaction)
     {
         //PUT
-        try {
-            $transaction = Transaction::findOrFail($transaction_id);
-
-            $this->isAble('replace', $transaction);
-
+        if ($this->isAble('replace', $transaction)){
             $transaction->update($request->mappedAttributes());
-
             return new TransactionResource($transaction);
-
-        } catch (ModelNotFoundException $exception){
-            return $this->error('Transaction can not be found.', 404);
-        } catch (AuthorizationException $ex) {
-            return $this->error('You are not authorized to replace that resource', 401);
         }
+
+        return $this->notAuthorized('You are not authorized to replace that resource');
     }
 
-    public function destroy($transaction_id)
+    public function destroy(Transaction $transaction)
     {
-        try {
-            $transaction = Transaction::findOrFail($transaction_id);
-
-            $this->isAble('delete', $transaction);
-
+        if ($this->isAble('destroy', $transaction)){
             $transaction->delete();
-
             return $this->ok('Transaction sucessfully deleted.');
-        } catch(ModelNotFoundException $exception) {
-            return $this->error('Transaction can not be found.', 404);
-        } catch (AuthorizationException $ex) {
-            return $this->error('You are not authorized to delete that resource', 401);
         }
+
+        return  $this->notAuthorized('You are not authorized to delete that resource');
     }
 }
 
