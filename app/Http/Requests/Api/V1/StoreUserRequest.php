@@ -21,11 +21,11 @@ class StoreUserRequest extends BaseUserRequest
     public function rules(): array
     {
         return [
-            'data.attributes.name' => 'required|string',
+            'data.attributes.name' => 'required|string|max:255|min:3',
             'data.attributes.email' => 'required|string|email|unique:users,email',
-            'data.attributes.password' => 'required|string',
-            'data.relationships.default_currency' => 'string|nullable',
-            'data.relationships.is_notifiable' => 'boolean|nullable',
+            'data.attributes.password' => 'required|string|min:8|max:50|',
+            'data.relationships.default_currency' => 'nullable|string|size:3',
+            'data.relationships.is_notifiable' => 'nullable|boolean',
         ];
     }
 }
