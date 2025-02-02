@@ -8,12 +8,9 @@ use App\Http\Requests\Api\V1\StoreTransactionRequest;
 use App\Http\Requests\Api\V1\UpdateTransactionRequest;
 use App\Http\Resources\V1\TransactionResource;
 use App\Models\Transaction;
-use App\Policies\V1\TransactionPolicy;
 
 class TransactionController extends ApiController
 {
-    protected string $policyClass = TransactionPolicy::class;
-
     public function index(TransactionFilter $filters){
         return TransactionResource::collection(Transaction::filter($filters)->paginate());
     }
