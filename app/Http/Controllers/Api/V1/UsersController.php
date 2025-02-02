@@ -91,6 +91,10 @@ class UsersController extends ApiController
      */
     public function destroy(User $user)
     {
-        //
+        if (!Gate::allows('delete', $user)) {
+            return $this->notAuthorized('You are not allowed to delete this user.');
+        }
+        $user->delete();
+        return $this->ok('User was successfully deleted.');
     }
 }
