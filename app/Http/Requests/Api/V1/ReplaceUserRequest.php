@@ -26,8 +26,8 @@ class ReplaceUserRequest extends BaseUserRequest
             'data.attributes.name' => 'required|string|max:255|min:3',
             'data.attributes.email' => 'required|string|email|unique:users,email',
             'data.attributes.password' => 'required|string|min:8|max:50|',
-            'data.relationships.default_currency' => 'required|string|size:3',
-            'data.relationships.is_notifiable' => 'required|boolean',
+            'data.attributes.default_currency' => 'required|string|size:3',
+            'data.attributes.is_notifiable' => 'required|boolean',
         ];
 
     }
