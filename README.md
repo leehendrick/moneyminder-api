@@ -42,4 +42,4 @@ The **MoneyMinder API** is a personal expense management system that allows user
    ```shell
    php artisan serve --port=8000
 
-The Api will be available at [http:127.0.0.1:8000]() 🚀
+The Api will be available at [http:127.0.0.1:8000](http:127.0.0.1:8000) 🚀
