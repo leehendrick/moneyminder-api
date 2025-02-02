@@ -2,7 +2,7 @@
 
 namespace App\Policies\V1;
 
-use App\Models\Transaction;
+
 use App\Models\User;
 use App\Permissions\V1\Abilities;
 use Illuminate\Support\Facades\Auth;
@@ -28,12 +28,7 @@ class UserPolicy
             return false;
     }*/
 
-    public function delete(User $user) {
-        $authUser = Auth::user();
-        //Verifica se o usuário está logado
-        if (!$authUser){
-            return false;
-        }
+    public function delete(User $authUser, User $user) {
 
         if ($authUser->tokenCan(Abilities::DeleteUser)){
             return true;
@@ -46,11 +41,7 @@ class UserPolicy
         return false;
     }
 
-    public function replace(User $user) {
-        $authUser = Auth::user();
-        if (!$authUser){
-            return false;
-        }
+    public function replace(User $authUser, User $user) {
 
         if ($authUser->tokenCan(Abilities::ReplaceUser)){
             return true;
@@ -63,11 +54,7 @@ class UserPolicy
         return false;
     }
 
-    public function update(User $user) {
-        $authUser = Auth::user();
-        if (!$authUser){
-            return false;
-        }
+    public function update(User $authUser, User $user) {
 
         if ($authUser->tokenCan(Abilities::UpdateUser)){
             return true;
