@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Filters\V1\UserFilter;
+use App\Http\Requests\Api\V1\ReplaceUserRequest;
 use App\Http\Requests\Api\V1\StoreUserRequest;
 use App\Http\Requests\Api\V1\UpdateUserRequest;
 use App\Http\Resources\V1\UserResource;
@@ -74,7 +75,14 @@ class UsersController extends ApiController
 
     }
 
-    public function replace(User $user){
+    public function replace(ReplaceUserRequest $request, User $user)
+    {
+        if (!Gate::allows('replace', $user)) {
+            return $this->notAuthorized('You are not allowed to replace this user.');
+        }
+
+        $user->update($request->mappedAttributes());
+        return  new UserResource($user);
 
     }
 
