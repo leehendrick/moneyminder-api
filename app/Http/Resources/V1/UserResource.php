@@ -5,6 +5,7 @@ namespace App\Http\Resources\V1;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 
 class UserResource extends JsonResource
 {
@@ -23,10 +24,10 @@ class UserResource extends JsonResource
             'attributes' => [
                 'name' => $this->name,
                 'email' => $this->email,
+                'default_currency' => $this->default_currency,
+                'is_notifiable' => $this->is_notifiable,
                 $this->mergeWhen($request->routeIs('users.*'), [
                     'emailVerifiedAt' => $this->email_verified_at,
-                    'default_currency' => $this->default_currency,
-                    'is_notifiable' => $this->is_notifiable,
                     'createdAt' => $this->created_at,
                     'updatedAt' => $this->updated_at,
                 ]),
