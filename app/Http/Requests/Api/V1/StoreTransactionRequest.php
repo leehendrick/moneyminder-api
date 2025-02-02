@@ -26,7 +26,7 @@ class StoreTransactionRequest extends BaseTransactionRequest
         $userIdAttr = $this->routeIs('transactions.store') ? 'data.relationships.author.data.id' : 'user';
 
         $rules = [
-            //TO DO: Usar regex para value
+            //TODO: Usar regex para value
             'data.attributes.value' => 'required|string',
             'data.attributes.date' => 'required|date_format:Y-m-d',
             'data.attributes.description' => 'required|string',
@@ -38,7 +38,7 @@ class StoreTransactionRequest extends BaseTransactionRequest
         if ($user->tokenCan(Abilities::CreateOwnTransaction)) {
             $rules[$userIdAttr] .= '|size:' . $user->id;
         }
-        //TO DO: Melhorar a validação e usar regex
+        //TODO: Melhorar a validação e usar regex
         if ($this->routeIs('transactions.store')) {
             $rules ['data.relationships.transactionType.data.id'] = 'required|integer';
             $rules ['data.relationships.category.data.id'] = 'required|integer';
