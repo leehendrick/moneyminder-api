@@ -11,7 +11,10 @@ use \App\Http\Controllers\Api\V1\UserTransactionsController;
 
 Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
 
-    Route::apiResource('users', UsersController::class);
+    Route::apiResource('users', UsersController::class)->except(['update']);
+    Route::put('users/{user}', [UsersController::class, 'replace']);
+    Route::patch('users/{user}', [UsersController::class, 'update']);
+
     Route::apiResource('transactions', TransactionController::class)->except(['update']);
     Route::put('transactions/{transaction}', [TransactionController::class, 'replace']);
     Route::patch('transactions/{transaction}', [TransactionController::class, 'update']);
