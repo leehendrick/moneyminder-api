@@ -19,9 +19,13 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     Route::put('transactions/{transaction}', [TransactionController::class, 'replace']);
     Route::patch('transactions/{transaction}', [TransactionController::class, 'update']);
 
-    Route::apiResource('transactionTypes', TransactionTypesController::class);
+    Route::apiResource('transactionTypes', TransactionTypesController::class)->except(['update']);
+    Route::put('transactionTypes/{transactionType}', [TransactionTypesController::class, 'replace']);
+    Route::patch('transactionTypes/{transactionType}', [TransactionTypesController::class, 'update']);
 
-    Route::apiResource('categories', CategoriesController::class);
+    Route::apiResource('categories', CategoriesController::class)->except(['update']);
+    Route::put('categories/{category}', [CategoriesController::class, 'replace']);
+    Route::patch('categories/{category}', [CategoriesController::class, 'update']);
 
     Route::apiResource('users.transactions', UserTransactionsController::class)->except(['update']);
     Route::put('users/{user}/transactions/{transaction}', [UserTransactionsController::class, 'replace']);
