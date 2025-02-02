@@ -18,16 +18,6 @@ class UserPolicy
         //
     }
 
-    //TODO Refactorar, não repetir a verificação do usuário logado
-    /**
-    public function isLoggedIn()
-    {
-        if (Auth::check()) {
-            return $auth = Auth::user();
-        }
-            return false;
-    }*/
-
     public function delete(User $authUser, User $user) {
 
         if ($authUser->tokenCan(Abilities::DeleteUser)){
