@@ -8,7 +8,6 @@ use App\Http\Requests\Api\V1\StoreUserRequest;
 use App\Http\Requests\Api\V1\UpdateUserRequest;
 use App\Http\Resources\V1\UserResource;
 use App\Models\User;
-use App\Policies\V1\UserPolicy;
 use Illuminate\Support\Facades\Gate;
 
 class UsersController extends ApiController
@@ -67,7 +66,7 @@ class UsersController extends ApiController
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        if (Gate::allows('update', $user)) {
+        if (Gate::allows('update-user', $user)) {
             $user->update($request->mappedAttributes());
             return  new UserResource($user);
         }
@@ -77,7 +76,7 @@ class UsersController extends ApiController
 
     public function replace(ReplaceUserRequest $request, User $user)
     {
-        if (!Gate::allows('replace', $user)) {
+        if (!Gate::allows('replace-user', $user)) {
             return $this->notAuthorized('You are not allowed to replace this user.');
         }
 
@@ -91,7 +90,7 @@ class UsersController extends ApiController
      */
     public function destroy(User $user)
     {
-        if (!Gate::allows('delete', $user)) {
+        if (!Gate::allows('delete-user', $user)) {
             return $this->notAuthorized('You are not allowed to delete this user.');
         }
         $user->delete();
