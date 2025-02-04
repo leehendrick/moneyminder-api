@@ -27,7 +27,7 @@ class ApiController extends Controller
 
         return in_array(strtolower($relationship), $includeValues);
     }
-
+    //TODO Refactor this function and use Gate in bootstrat
     public function isAble($ability, $targetModel)
     {
         // Verifica se o modelo é um objeto e se é uma instância de User ou Transaction
