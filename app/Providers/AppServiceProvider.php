@@ -24,10 +24,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if ($this->app->environment('production')) {
-            \Illuminate\Support\Facades\URL::forceScheme('https');
-        }
-        
         Gate::define('update-user', [UserPolicy::class, 'update']);
         Gate::define('replace-user', [UserPolicy::class, 'replace']);
         Gate::define('delete-user', [UserPolicy::class, 'delete']);
