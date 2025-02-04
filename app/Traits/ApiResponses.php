@@ -15,7 +15,7 @@ trait ApiResponses {
         ], $statusCode);
     }
 
-    protected function error($errors = [], $statusCode = null) {
+    protected function error($errors = [], $statusCode = 500) {
         if (is_string($errors)) {
             return response()->json([
                 'message' => $errors,
