@@ -5,7 +5,6 @@ namespace App\Policies\V1;
 
 use App\Models\User;
 use App\Permissions\V1\Abilities;
-use Illuminate\Support\Facades\Auth;
 
 class TransactionTypePolicy
 {
