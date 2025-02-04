@@ -8,9 +8,11 @@
     "require": {
         "php": "^8.2",
         "darkaonline/l5-swagger": "*",
+        "doctrine/dbal": "^4.2",
         "laravel/framework": "^11.31",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
+        "nette/database": "^3.2",
         "zircote/swagger-php": "^5.0"
     },
     "require-dev": {

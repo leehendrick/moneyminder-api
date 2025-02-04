@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('default_currency')->default('CAD');
             $table->boolean('is_notifiable')->default(true);
             $table->boolean('is_admin')->default(false);
-            $table->foreignId('transaction_id')->nullable()->constrained();
             $table->rememberToken();
             $table->timestamps();
         });
