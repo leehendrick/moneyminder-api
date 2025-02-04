@@ -2,19 +2,22 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\V1\ReplaceCategoryRequest;
+use App\Http\Requests\Api\V1\StoreCategoryRequest;
+use App\Http\Requests\Api\V1\UpdateCategoryRequest;
 use App\Http\Resources\V1\CategoriesResource;
 use App\Models\Category;
-use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Support\Facades\Gate;
 
-class CategoriesController extends Controller
+class CategoriesController extends ApiController
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return CategoriesResource::collection(Category::all());
+        return CategoriesResource::collection(Category::paginate());
     }
 
     /**
@@ -28,9 +31,13 @@ class CategoriesController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreCategoryRequest $request, User $user)
     {
-        //
+        if (!Gate::allows('create-category', $user)) {
+            return $this->notAuthorized('You are not allowed to create categories.');
+        }
+        $category = Category::create($request->mappedAttributes());
+        return new CategoriesResource($category);
     }
 
     /**
@@ -52,9 +59,22 @@ class CategoriesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $category)
+    public function update(UpdateCategoryRequest $request, Category $category)
     {
-        //
+        if (!Gate::allows('update-category', $category)) {
+            return $this->notAuthorized('You are not allowed to update categories.');
+        }
+        $category->update($request->mappedAttributes());
+        return new CategoriesResource($category);
+    }
+
+    public function replace(ReplaceCategoryRequest $request, Category $category)
+    {
+        if (!Gate::allows('replace-category', $category)) {
+            return $this->notAuthorized('You are not allowed to replace categories.');
+        }
+        $category->update($request->mappedAttributes());
+        return new CategoriesResource($category);
     }
 
     /**
@@ -62,6 +82,10 @@ class CategoriesController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        if (!Gate::allows('delete-category', $category)) {
+            return $this->notAuthorized('You are not allowed to delete categories.');
+        }
+        $category->delete();
+        return $this->ok('Category deleted');
     }
 }
