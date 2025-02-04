@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Api\V1\StoreUserRequest;
 use App\Http\Requests\ApiLoginRequest;
+use App\Http\Resources\V1\UserResource;
 use App\Permissions\V1\Abilities;
 use App\Traits\ApiResponses;
 use Illuminate\Http\Request;
@@ -33,8 +35,13 @@ class AuthController extends Controller
         );
     }
 
-    public function register() {
-
+    public function register(StoreUserRequest $request) {
+        try {
+            $user = User::create($request->mappedAttributes());
+            return $this->ok('User created');
+        } catch (\Exception $exception) {
+            return $this->error($exception->getMessage(), 200);
+        }
     }
 
     public function logout(Request $request) {
