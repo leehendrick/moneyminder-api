@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
-Route::get('/home', function (Request $request) {
+
+Route::get('/', function (Request $request) {
     return view('welcome');
 });
 Route::post('/login', [AuthController::class, 'login']);
