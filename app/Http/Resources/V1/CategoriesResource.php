@@ -19,12 +19,23 @@ class CategoriesResource extends JsonResource
             'id' => $this->id,
             'attributes' => [
                 'name' => $this->name,
+                'monthly_limit' => $this->monthly_limit,
+                'is_default' => $this->is_default,
                 $this->mergeWhen($request->routeIs('categories.*'),[
-                    'monthly_limit' => $this->monthly_limit,
-                    'is_default' => $this->is_default,
                     'createdAt' => $this->created_at,
                     'updatedAt' => $this->updated_at,
                 ])
+            ],
+            'relationships' => [
+                'author' => [
+                    'data' => [
+                        'type' => 'user',
+                        'id' => $this->user_id,
+                    ],
+                    'links' => [
+                            'self' => route('users.show', ['user' => $this->user_id]),
+                    ],
+                ],
             ],
         ];
     }
