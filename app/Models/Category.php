@@ -11,6 +11,13 @@ class Category extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'monthly_limit',
+        'is_default',
+        'user_id',
+    ];
+
     public function transaction(): BelongsTo
     {
         return $this->belongsTo(Transaction::class);
